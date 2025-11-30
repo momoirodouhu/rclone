@@ -124,6 +124,11 @@ So for |concurrency 3| you'd use |--checkers 2 --transfers 2
 			Default:  false,
 			Advanced: true,
 		}, {
+			Name:     "disable_set_time",
+			Help:     "Force disable SetTime support even if the server advertises it.",
+			Default:  false,
+			Advanced: true,
+		}, {
 			Name:     "writing_mdtm",
 			Help:     "Use MDTM to set modification time (VsFtpd quirk)",
 			Default:  false,
@@ -260,6 +265,7 @@ type Options struct {
 	DisableEPSV             bool                 `config:"disable_epsv"`
 	DisableMLSD             bool                 `config:"disable_mlsd"`
 	DisableUTF8             bool                 `config:"disable_utf8"`
+	DisableSetTime          bool                 `config:"disable_set_time"`
 	WritingMDTM             bool                 `config:"writing_mdtm"`
 	ForceListHidden         bool                 `config:"force_list_hidden"`
 	IdleTimeout             fs.Duration          `config:"idle_timeout"`
@@ -704,6 +710,9 @@ func NewFs(ctx context.Context, name, root string, m configmap.Mapper) (ff fs.Fs
 	}
 	f.fGetTime = c.IsGetTimeSupported()
 	f.fSetTime = c.IsSetTimeSupported()
+	if f.opt.DisableSetTime {
+		f.fSetTime = false
+	}
 	f.fLstTime = c.IsTimePreciseInList()
 	if !f.fLstTime && f.fGetTime {
 		f.features.SlowModTime = true

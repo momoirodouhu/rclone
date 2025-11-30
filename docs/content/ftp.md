@@ -357,6 +357,17 @@ Properties:
 - Type:        bool
 - Default:     false
 
+#### --ftp-disable-set-time
+
+Force disable SetTime support even if the server advertises it.
+
+Properties:
+
+- Config:      disable_set_time
+- Env Var:     RCLONE_FTP_DISABLE_SET_TIME
+- Type:        bool
+- Default:     false
+
 #### --ftp-writing-mdtm
 
 Use MDTM to set modification time (VsFtpd quirk)
